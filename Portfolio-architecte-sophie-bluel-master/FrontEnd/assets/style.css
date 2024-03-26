@@ -49,6 +49,7 @@ table {
 /** end reset css**/
 body {
 	max-width: 1140px;
+	background-color: #FFFEF8;
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
@@ -78,7 +79,7 @@ h1 > span {
 ;
 }
 
-h2{
+h2 {
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 30px;
@@ -123,11 +124,41 @@ li:hover {
 }
 #portfolio h2 {
 	text-align: center;
-	margin-bottom: 1em;
+	margin-bottom: 0;
 }
 
-.button__categories {
-	width: 100px;
+
+
+.container__filter {
+	width: 585px;
+	margin: auto;
+	margin-top: 51px;
+	margin-bottom: 51px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.buttons__categories {
+	padding: auto; /* Problème paddings différents class pour chaque boutons = beaucoup de code pour rien*/
+	font-weight: 700;
+	font-size: 16px;
+	font-family: 'Syne';
+	background-color: #FFFEF8;
+	color: #1D6154;
+	height: 37px;
+	border-radius: 60px;
+	border: 1px solid #1D6154;
+
+}
+
+.button__categories--tous {
+	font-weight: 700;
+	font-size: 16px;
+	padding-left: 28px;
+	padding-right: 30px;
+	color: white;
+	font-family: 'Syne';
+	background-color: #1D6154;
 	height: 37px;
 	border-radius: 60px;
 	border: 1px solid #1D6154; 
@@ -135,9 +166,16 @@ li:hover {
 }
 
 .button__categories :hover {
-	width: 110%;
-	height: 110%;
+	color: white;
+	background-color: #1D6154;
 }
+
+.button__categories--tous :hover {
+	color: #1D6154;
+	background-color: #FFFEF8;
+}
+
+
 .gallery {
 	width: 100%;
 	display: grid;

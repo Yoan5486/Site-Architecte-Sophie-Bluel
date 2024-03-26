@@ -32,13 +32,24 @@ async function getCategories () {
 
 async function displayCategories () {
     const dataCategories = await getCategories ()
-    let containerCategories = document.querySelector("#portfolio")
-    for (let i = 0; i < dataCategories.lenght; i++) {
+    let containerCategories = document.querySelector(".container__filter")
+    let baliseTous = document.createElement("button")
+    containerCategories.appendChild(baliseTous)
+    baliseTous.textContent = "Tous"
+    baliseTous.classList.add ("button__categories--tous")
+    for (let i = 0; i < dataCategories.length; i++) {
         let baliseButton  = document.createElement("button")
         containerCategories.appendChild(baliseButton)
-        baliseButton.setAttribute("", dataCategories[i].name) 
-
+        baliseButton.textContent = dataCategories[i].name
+        baliseButton.classList.add ("buttons__categories")
     }
+
+baliseButton.addEventListener("click", () => {
+    
+
+})
+  
+    console.log(baliseTous)
     console.log(dataCategories)
 }
 
