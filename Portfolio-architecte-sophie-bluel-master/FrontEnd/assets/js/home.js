@@ -37,31 +37,34 @@ async function displayCategories () {
     containerCategories.appendChild(baliseTous)
     baliseTous.textContent = "Tous"
     baliseTous.classList.add ("button__categories--tous")
+    baliseTous.classList.add ("all__buttons")
+    baliseTous.classList.add ("button__selected")
     for (let i = 0; i < dataCategories.length; i++) {
         let baliseButton  = document.createElement("button")
         containerCategories.appendChild(baliseButton)
         baliseButton.textContent = dataCategories[i].name
         baliseButton.classList.add ("buttons__categories")
-    }
+        baliseButton.classList.add ("all__buttons")
+    }  
 
-let baliseButton2 = document.querySelector(".button__categories")    
-containerCategories.appendChild(baliseButton2)
+let allButtons = document.querySelectorAll(".all__buttons")
+console.log(allButtons)
 
-
-baliseTous.addEventListener("click", () => {
-    set (has)/*creation d'une fonction ?
-    baliseTous.classList.add ("button__categories--tous:hover")*/
-    document.button.insertAdjacentElement('hover', baliseTous)
-    baliseTous.classList.remove ("button__categories--tous")
+allButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+       allButtons.forEach((btn) => {
+        btn.classList.remove('button__selected');
+    });
+    button.classList.add('button__selected');
+    })
 })
-  
-baliseButton2.addEventListener("click", () => {
-    baliseButton2.classList.add ("button__categories:hover")
-    baliseButton2.classList.remove ("button__categories")
-})
+
+const mySet = new Set()
+
+mySet.add()
+
 
     console.log(baliseTous)
-    console.log(baliseButton)
     console.log(dataCategories)
 }
 

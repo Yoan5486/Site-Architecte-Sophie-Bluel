@@ -139,7 +139,8 @@ li:hover {
 }
 
 .buttons__categories {
-	padding: auto; /* Problème paddings différents class pour chaque boutons = beaucoup de code pour rien*/
+	padding-right: 13px;
+	padding-left: 13px;
 	font-weight: 700;
 	font-size: 16px;
 	font-family: 'Syne';
@@ -156,24 +157,26 @@ li:hover {
 	font-size: 16px;
 	padding-left: 28px;
 	padding-right: 30px;
-	color: white;
+	background-color: #FFFEF8;
+	color: #1D6154;
 	font-family: 'Syne';
-	background-color: #1D6154;
 	height: 37px;
 	border-radius: 60px;
 	border: 1px solid #1D6154; 
 
 }
 
-.button__categories :hover {
+.buttons__categories:hover {
 	color: white;
 	background-color: #1D6154;
 }
 
-.button__categories--tous :hover {
-	color: #1D6154;
-	background-color: #FFFEF8;
+.button__selected {
+	color: white;
+	background-color: #1D6154;
+
 }
+
 
 
 .gallery {
