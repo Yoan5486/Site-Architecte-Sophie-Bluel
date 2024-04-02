@@ -44,12 +44,24 @@ async function displayCategories () {
         baliseButton.classList.add ("buttons__categories")
     }
 
-baliseButton.addEventListener("click", () => {
-    
+let baliseButton2 = document.querySelector(".button__categories")    
+containerCategories.appendChild(baliseButton2)
 
+
+baliseTous.addEventListener("click", () => {
+    set (has)/*creation d'une fonction ?
+    baliseTous.classList.add ("button__categories--tous:hover")*/
+    document.button.insertAdjacentElement('hover', baliseTous)
+    baliseTous.classList.remove ("button__categories--tous")
 })
   
+baliseButton2.addEventListener("click", () => {
+    baliseButton2.classList.add ("button__categories:hover")
+    baliseButton2.classList.remove ("button__categories")
+})
+
     console.log(baliseTous)
+    console.log(baliseButton)
     console.log(dataCategories)
 }
 
