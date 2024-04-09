@@ -65,8 +65,18 @@ console.log (dataCategories)
             const filteredWorks = await filterWorksByCategories(parseInt (idCategories))
             let containerWorks = document.querySelector(".gallery")
             containerWorks.innerHTML = ''
-            displayWorks ()
             console.log(idCategories)
+            for (let i = 0; i < filteredWorks.length; i++) {
+                let baliseFigure = document.createElement("figure");
+                let baliseImg = document.createElement("img");
+                let baliseFigcaption = document.createElement("figcaption");
+                containerWorks.appendChild(baliseFigure);
+                baliseFigure.appendChild(baliseImg);
+                baliseFigure.appendChild(baliseFigcaption);
+                baliseImg.setAttribute("src", filteredWorks[i].imageUrl);
+                baliseImg.setAttribute("alt", filteredWorks[i].title);
+                baliseFigcaption.textContent = filteredWorks[i].title;
+            }
         })
     }
     }  
