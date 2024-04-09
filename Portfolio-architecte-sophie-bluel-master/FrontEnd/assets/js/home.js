@@ -93,7 +93,7 @@ allButtons.forEach((button) => {
     })
 })
 
-
+displayWorks ()
 displayCategories ()
 
 
