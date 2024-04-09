@@ -1,6 +1,6 @@
-async function filterWorksByCategory(category) {
+async function filterWorksByObjects(objects) {
     const dataWorks = await getWorks()
-    const filteredWorks = dataWorks.filter(work => work.category === category)
+    const filteredWorks = dataWorks.filter(work => work.objects === objects)
     return filteredWorks
 }
 
@@ -58,8 +58,8 @@ async function displayCategories () {
         baliseButton.classList.add ("buttons__categories")
         baliseButton.classList.add ("all__buttons")
         baliseButton.addEventListener("click", async () => {
-            const category = dataCategories[i].name
-            const filteredWorks = await filterWorksByCategory(category)
+            const objects = dataCategories[i].name
+            const filteredWorks = await filterWorksByObjects(objects)
             let containerWorks = document.querySelector(".gallery")
             containerWorks.innerHTML = ''
             for (let i = 0; i < filteredWorks.length; i++) {
@@ -69,9 +69,13 @@ async function displayCategories () {
                 containerWorks.appendChild(baliseFigure)
                 baliseFigure.appendChild(baliseImg)
                 baliseFigure.appendChild(baliseFigcaption)
-                baliseImg.setAttribute("src", filteredWorks[i].imageUrl)
-                baliseImg.setAttribute("alt", filteredWorks[i].title)
-                baliseFigcaption.textContent = filteredWorks[i].title
+                baliseImg.setAttribute("src", dataWorks[0].imageUrl)
+                baliseImg.setAttribute("alt", dataWorks[0].title)
+                baliseImg.setAttribute("src", dataWorks[4].imageUrl)
+                baliseImg.setAttribute("alt", dataWorks[4].title)
+                baliseFigcaption.textContent = dataWorks[0].title
+                baliseFigcaption.textContent = dataWorks[4].title
+                
             }
         })
     }
