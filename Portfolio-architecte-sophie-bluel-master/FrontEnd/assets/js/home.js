@@ -1,6 +1,8 @@
-async function filterWorksByObjects(objects) {
+async function filterWorksByCategories(idCategories) {
     const dataWorks = await getWorks()
-    const filteredWorks = dataWorks.filter(work => work.objects === objects)
+    const filteredWorks = dataWorks.filter(work => work.categoryId === idCategories)
+    console.log(filteredWorks)
+    console.log(idCategories)
     return filteredWorks
 }
 
@@ -50,39 +52,28 @@ async function displayCategories () {
     baliseTous.addEventListener("click", async () => {
         await displayWorks()
     })
-
+console.log (dataCategories)
     for (let i = 0; i < dataCategories.length; i++) {
         let baliseButton  = document.createElement("button")
         containerCategories.appendChild(baliseButton)
         baliseButton.textContent = dataCategories[i].name
         baliseButton.classList.add ("buttons__categories")
         baliseButton.classList.add ("all__buttons")
-        baliseButton.addEventListener("click", async () => {
-            const objects = dataCategories[i].name
-            const filteredWorks = await filterWorksByObjects(objects)
+        baliseButton.setAttribute ("categories__id", dataCategories[i].id)
+        baliseButton.addEventListener("click", async (event) => {
+            const idCategories = event.target.getAttribute ("categories__id") 
+            const filteredWorks = await filterWorksByCategories(parseInt (idCategories))
             let containerWorks = document.querySelector(".gallery")
             containerWorks.innerHTML = ''
-            for (let i = 0; i < filteredWorks.length; i++) {
-                let baliseFigure = document.createElement("figure")
-                let baliseImg = document.createElement("img")
-                let baliseFigcaption = document.createElement("figcaption")
-                containerWorks.appendChild(baliseFigure)
-                baliseFigure.appendChild(baliseImg)
-                baliseFigure.appendChild(baliseFigcaption)
-                baliseImg.setAttribute("src", dataWorks[0].imageUrl)
-                baliseImg.setAttribute("alt", dataWorks[0].title)
-                baliseImg.setAttribute("src", dataWorks[4].imageUrl)
-                baliseImg.setAttribute("alt", dataWorks[4].title)
-                baliseFigcaption.textContent = dataWorks[0].title
-                baliseFigcaption.textContent = dataWorks[4].title
-                
-            }
+            displayWorks ()
+            console.log(idCategories)
         })
     }
     }  
    
 let allButtons = document.querySelectorAll(".all__buttons")
 console.log(allButtons)
+
 
 allButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -92,7 +83,7 @@ allButtons.forEach((button) => {
     button.classList.add('button__selected')
     })
 })
-
+ 
 displayWorks ()
 displayCategories ()
 
