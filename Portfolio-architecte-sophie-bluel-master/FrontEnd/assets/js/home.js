@@ -9,28 +9,30 @@ async function filterWorksByCategories(idCategories) {
 async function getWorks () {
     const response = await fetch ("http://localhost:5678/api/works")
 
-    return await response.json ()
+    let data = await response.json ()
+    console.log(data)
+    return data
 }
 
-async function displayWorks () {
-    const dataWorks = await getWorks ()
+async function displayWorks (data) {
+    console.log(data)
     let containerWorks = document.querySelector(".gallery")
     containerWorks.innerHTML = ''
-    for (let i = 0; i < dataWorks.length; i++) { 
+    for (let i = 0; i < data.length; i++) { 
         let baliseFigure = document.createElement("figure")
         let baliseImg = document.createElement("img")
         let baliseFigcaption = document.createElement("figcaption")
         containerWorks.appendChild (baliseFigure) 
         baliseFigure.appendChild (baliseImg)
         baliseFigure.appendChild (baliseFigcaption)
-        baliseImg.setAttribute ("src", dataWorks[i].imageUrl)
-        baliseImg.setAttribute("alt", dataWorks[i].title)
-        baliseFigcaption.textContent = dataWorks[i].title
+        baliseImg.setAttribute ("src", data[i].imageUrl)
+        baliseImg.setAttribute("alt", data[i].title)
+        baliseFigcaption.textContent = data[i].title
     }
-    console.log(dataWorks)
+
 }
 
-displayWorks ()
+displayWorks (getWorks ())
 
 async function getCategories () {
     const response = await fetch ("http://localhost:5678/api/categories")
@@ -50,7 +52,8 @@ async function displayCategories () {
     baliseTous.classList.add ("button__selected")
 
     baliseTous.addEventListener("click", async () => {
-        await displayWorks()
+          const dataWorks = await getWorks()
+        await displayWorks(dataWorks)
     })
 console.log (dataCategories)
     for (let i = 0; i < dataCategories.length; i++) {
@@ -66,35 +69,24 @@ console.log (dataCategories)
             let containerWorks = document.querySelector(".gallery")
             containerWorks.innerHTML = ''
             console.log(idCategories)
-            for (let i = 0; i < filteredWorks.length; i++) {
-                let baliseFigure = document.createElement("figure");
-                let baliseImg = document.createElement("img");
-                let baliseFigcaption = document.createElement("figcaption");
-                containerWorks.appendChild(baliseFigure);
-                baliseFigure.appendChild(baliseImg);
-                baliseFigure.appendChild(baliseFigcaption);
-                baliseImg.setAttribute("src", filteredWorks[i].imageUrl);
-                baliseImg.setAttribute("alt", filteredWorks[i].title);
-                baliseFigcaption.textContent = filteredWorks[i].title;
-            }
+            displayWorks (filteredWorks)
         })
     }
-    }  
-   
 let allButtons = document.querySelectorAll(".all__buttons")
-console.log(allButtons)
-
-
 allButtons.forEach((button) => {
     button.addEventListener("click", () => {
        allButtons.forEach((btn) => {
         btn.classList.remove('button__selected')
-    });
+    })
     button.classList.add('button__selected')
     })
 })
+    }  
+
+
+
  
-displayWorks ()
+displayWorks (getWorks())
 displayCategories ()
 
 
