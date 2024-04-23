@@ -1,0 +1,55 @@
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.margins__login {
+    margin-top: 100px;
+    margin-bottom: 37px;
+}
+
+
+.input__btn {
+    border: 0;
+    width: 379px;
+    height: 51px;
+    box-shadow: 0px 4px 14px 0px #00000017;
+}
+
+.title__buttons {
+    margin-top: 0;
+    margin-bottom: 7px;
+}
+
+.no__margin {
+    margin: 0;
+}
+
+.margins__buttons {
+    margin-bottom: 30px;
+}
+
+.margins__btn--connect {
+    margin-top: 37px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn__connect {
+    width: 179px;
+    height: 36px;
+    border: 0;
+    border-radius: 60px;
+    color: white;
+    font-family: 'Syne';
+    font-size: 14px;
+    background-color: #1D6154;
+    line-height: 36px;
+}
+
+.mdp__oublie {
+    margin-top: 28px;
+    color: #3d3d3d;
+}
