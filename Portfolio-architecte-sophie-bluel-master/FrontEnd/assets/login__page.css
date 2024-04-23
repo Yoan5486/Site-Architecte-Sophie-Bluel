@@ -32,6 +32,7 @@ main {
 
 .margins__btn--connect {
     margin-top: 37px;
+    margin-bottom: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -52,4 +53,5 @@ main {
 .mdp__oublie {
     margin-top: 28px;
     color: #3d3d3d;
+    margin-bottom: 355px;
 }
