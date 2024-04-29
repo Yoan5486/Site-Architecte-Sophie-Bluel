@@ -99,6 +99,13 @@ nav li {
 li:hover {
 	color: #B1663C;
 }
+
+.txt__mode--edition {
+	font-family: 'Work Sans';
+	font-weight: 400;
+	font-size: 16px;
+	color: white;
+}
 #introduction {
 	display: flex;
 	align-items: center;
