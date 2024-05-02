@@ -107,20 +107,9 @@ const authToken = localStorage.getItem("authToken")
 if (authToken) {
     
     loginLink.textContent = "logout"
-   
-    function createFontAwesomeIcon(iconName) {
-        const iconElement = document.createElement("i")
-        iconElement.classList.add("fas", `fa-${iconName}`)
-        return iconElement
-    }
-    
     async function displayIcon() {
         const banner = document.createElement("div")
-        banner.style.backgroundColor = "black"
-        banner.style.height = "59px"
-        banner.style.display = "flex"
-        banner.style.alignItems = "center"
-        banner.style.justifyContent = "center"
+        banner.classList.add("banner")
         const modeEdition = document.createElement("span")
         modeEdition.textContent = "Mode édition"
         modeEdition.classList.add("txt__mode--edition")
@@ -128,24 +117,25 @@ if (authToken) {
         const iconContainer = document.createElement("div")
         iconContainer.classList.add("icon__container")
         banner.appendChild(iconContainer)
-        const icon = createFontAwesomeIcon("pen-to-square")
-        iconContainer.appendChild(icon); 
+        const icon = document.createElement("i")
+        icon.classList.add("fa-regular", "fa-pen-to-square")
+        iconContainer.appendChild(icon)
         const txtModifier = document.createElement("span")
-        txtModifier.appendChild(icon)
         txtModifier.textContent = "modifier"
-        txtModifier.style.fontSize = "14px"
-        txtModifier.style.fontFamily = "work-sans"
+        txtModifier.classList.add("txt__modifier")
+        const logotxtModifier = document.createElement("i") 
+        logotxtModifier.classList.add("fa-regular", "fa-pen-to-square", "logo__txt--modifier")
+        txtModifier.appendChild(logotxtModifier)
         const txtMesprojets = document.querySelector("#portfolio h2")
         txtMesprojets.appendChild(txtModifier)
         document.body.insertBefore(banner, document.body.firstChild)
 }
+
 displayIcon ()
     
 
 }
-   /*const icon = document.createElement("i")
-    icon.classList.add("fa-regular", "fa-pen-to-square")
-    banner.appendChild(icon)*/
+  
     
 
 displayWorksOnLoad ()

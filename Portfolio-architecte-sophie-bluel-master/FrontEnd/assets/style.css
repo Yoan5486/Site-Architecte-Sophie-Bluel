@@ -101,14 +101,46 @@ li:hover {
 }
 
 .txt__mode--edition {
-	font-family: 'Work Sans';
 	font-weight: 400;
 	font-size: 16px;
 	color: white;
 }
 
+.banner {
+	background-color: black;
+	height: 59px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row-reverse;
+}
+
+.margin__txt {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.txt__modifier {
+	color: black;
+	margin-left: 10.42px;
+	font-size: 14px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row-reverse;
+
+}
 .icon__container {
+	display: flex;
+	align-items: center;
 	margin-right: 11.42px;
+	color: white;
+}
+
+.logo__txt--modifier {
+	margin-right: 10.42px;
+	margin-left: 31px;
 }
 #introduction {
 	display: flex;
