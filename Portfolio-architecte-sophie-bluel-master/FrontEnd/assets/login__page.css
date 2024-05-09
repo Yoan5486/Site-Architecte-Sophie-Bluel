@@ -49,6 +49,10 @@ main {
     background-color: #1D6154;
 }
 
+.btn__connect:hover {
+    background-color: #0E2F28;
+}
+
 .mdp__oublie {
     margin-top: 28px;
     color: #3d3d3d;

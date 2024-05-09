@@ -17,6 +17,7 @@ async function getWorks () {
     return data
 }
 
+
 async function displayWorks (data) {
     console.log(data)
     let containerWorks = document.querySelector(".gallery")
@@ -25,6 +26,7 @@ async function displayWorks (data) {
         let baliseFigure = document.createElement("figure")
         let baliseImg = document.createElement("img")
         let baliseFigcaption = document.createElement("figcaption")
+        baliseFigure.setAttribute("data-id", data[i].id)
         containerWorks.appendChild (baliseFigure) 
         baliseFigure.appendChild (baliseImg)
         baliseFigure.appendChild (baliseFigcaption)
@@ -40,6 +42,7 @@ async function displayWorksOnLoad () {
     const dataWorks = await getWorks()
     await displayWorks(dataWorks)
 }
+
 
 async function getCategories () {
     const response = await fetch ("http://localhost:5678/api/categories")
@@ -132,11 +135,60 @@ if (authToken) {
 }
 
 displayIcon ()
-    
+ const modal = document.getElementById("modal")
+ const btnModifier = document.querySelector(".txt__modifier")
+
+ const spanClose = document.querySelector(".modal__close")
+
+ btnModifier.addEventListener("click", () => {
+    if (!modalOpen) {
+        modal.style.display = "block"
+        modalOpen = true
+      }
+ })
+
+ spanClose.addEventListener("click", () => {
+    if (modalOpen) {
+        modal.style.display = "none"
+        modalOpen = false
+      }
+ })
+
+ window.addEventListener("click", (event) => {
+   if (event.target === modal) {
+     modal.style.display = "none"
+     modalOpen = false
+   }
+ })   
+
+const projectsMake = document.querySelector(".projects__sub")
+  const galleryFigures = document.querySelectorAll(".gallery figure")
+  galleryFigures.forEach((figure) => {
+    projectsMake.appendChild(figure)
+  })
+  
+  const trashIcon = document.querySelector(".trash__icon")
+  trashIcon.addEventListener("click", async () => {
+    const workId = workData.id
+      await deleteWorkById(workId)
+      baliseFigure.remove()
+  })
+  baliseFigure.appendChild(trashIcon)
+  return baliseFigure
+
+  async function deleteWorkById(workId) {
+    try {
+      const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
+        method: 'DELETE'
+      })
+      const dataDelete = await response.json()
+      console.log(dataDelete)
+    } catch (error) {
+      console.error('Erreur lors de la suppression de l\'œuvre :', error)
+    }
+  }
 
 }
-  
-    
 
 displayWorksOnLoad ()
 

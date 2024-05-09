@@ -97,7 +97,7 @@ nav li {
 }
 
 li:hover {
-	color: #B1663C;
+	font-weight: bold;
 }
 
 .txt__mode--edition {
@@ -114,6 +114,70 @@ li:hover {
 	align-items: center;
 	flex-direction: row-reverse;
 }
+
+.modal {
+	display: none; 
+	position: fixed;
+	z-index: 100;
+	left: 405;
+	top: 660;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0,0,0,0.4)
+
+  }
+  
+.modal-content {
+	background-color: white;
+	margin: 15% auto;
+	padding: 20px;
+	border: 0;
+	border-radius: 10px;
+	width: 630px;
+	height: 688px;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  
+.projects__sub {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-right: 4.5px;
+	margin-left: 4.5px;
+}
+
+.trash__icon {
+	position: absolute;
+	z-index: 1;
+	top: 79.57;
+	left: 54.53;
+}
+
+.line { 
+	width: 420px;
+    border: 1px solid #B3B3B3; 
+}
+
+.btn__add--photo {
+	width: 237px;
+	height: 36px;
+	border: 0;
+	border-radius: 60px;
+	background-color: #1D6154;
+	color: white; 
+	font-family: "Syne"; 
+	font-weight: 700;
+	font-size: 14px;
+}
+
+.modal__close {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+  }
 
 .margin__txt {
 	display: flex;
@@ -219,8 +283,6 @@ li:hover {
 	background-color: #1D6154;
 
 }
-
-
 
 .gallery {
 	width: 100%;
