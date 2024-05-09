@@ -50,6 +50,7 @@ async function getCategories () {
     return await response.json ()
 }
 
+let modalOpen = false
 
 async function displayCategories () {
     const dataCategories = await getCategories ()
@@ -133,19 +134,26 @@ if (authToken) {
         txtMesprojets.appendChild(txtModifier)
         document.body.insertBefore(banner, document.body.firstChild)
 }
+displayWorksOnLoad ()
 
 displayIcon ()
- const modal = document.getElementById("modal")
+ const modal = function (e) {
+  e.preventDefault()
+  const targetSelector = e.target.getAttribute('href')
+  const target = document.querySelector(targetSelector)
+  if (target) {
+  target.style.display = "block"
+  target.removeAttribute('aria-hidden')
+  target.setAttribute('aria-modal', 'true')
+  }
+}
  const btnModifier = document.querySelector(".txt__modifier")
-
+ 
  const spanClose = document.querySelector(".modal__close")
 
- btnModifier.addEventListener("click", () => {
-    if (!modalOpen) {
-        modal.style.display = "block"
-        modalOpen = true
-      }
- })
+ btnModifier.addEventListener("click", modal)
+
+ 
 
  spanClose.addEventListener("click", () => {
     if (modalOpen) {
@@ -160,21 +168,22 @@ displayIcon ()
      modalOpen = false
    }
  })   
-
+ console.log(modal, btnModifier, spanClose)
 const projectsMake = document.querySelector(".projects__sub")
   const galleryFigures = document.querySelectorAll(".gallery figure")
   galleryFigures.forEach((figure) => {
     projectsMake.appendChild(figure)
   })
   
-  const trashIcon = document.querySelector(".trash__icon")
-  trashIcon.addEventListener("click", async () => {
-    const workId = workData.id
+  document.addEventListener("click", async (event) => {
+    const trashIcon = event.target.closest(".trash__icon")
+    if (trashIcon) {
+      const workId = trashIcon.parentNode.getAttribute("data-id")
       await deleteWorkById(workId)
-      baliseFigure.remove()
+      trashIcon.parentNode.remove()
+    }
   })
-  baliseFigure.appendChild(trashIcon)
-  return baliseFigure
+  
 
   async function deleteWorkById(workId) {
     try {
@@ -187,10 +196,11 @@ const projectsMake = document.querySelector(".projects__sub")
       console.error('Erreur lors de la suppression de l\'œuvre :', error)
     }
   }
+ 
 
 }
 
-displayWorksOnLoad ()
+
 
 
 console.log (await getWorks ())
