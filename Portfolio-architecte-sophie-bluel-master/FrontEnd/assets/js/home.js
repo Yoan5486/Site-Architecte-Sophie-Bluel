@@ -139,6 +139,7 @@ displayWorksOnLoad ()
 displayIcon ()
  const modal = function (e) {
   e.preventDefault()
+  displayWorks ()
   const targetSelector = e.target.getAttribute('href')
   const target = document.querySelector(targetSelector)
   if (target) {
@@ -169,7 +170,7 @@ displayIcon ()
    }
  })   
  console.log(modal, btnModifier, spanClose)
-const projectsMake = document.querySelector(".projects__sub")
+
   const galleryFigures = document.querySelectorAll(".gallery figure")
   galleryFigures.forEach((figure) => {
     projectsMake.appendChild(figure)
@@ -183,6 +184,7 @@ const projectsMake = document.querySelector(".projects__sub")
       trashIcon.parentNode.remove()
     }
   })
+  
   
 
   async function deleteWorkById(workId) {
@@ -200,7 +202,27 @@ const projectsMake = document.querySelector(".projects__sub")
 
 }
 
+let baliseI = document.createElement("i")
+/*baliseI.classList.add("fa-solid fa-trash-can")*/
 
+async function displayWorksOnModal (data) {
+  const projectsMake = document.querySelector(".projects__sub")
+  let dataWorks = await getWorks () 
+console.log(data)
+  for (let i = 0; i < dataWorks.length; i++) { 
+    let baliseDiv = document.createElement("div")
+    let baliseImg = document.createElement("img")
+    baliseImg.classList.add("img__modal")
+    baliseDiv.setAttribute("data-id", dataWorks[i].id)
+    projectsMake.appendChild (baliseDiv) 
+    baliseDiv.appendChild (baliseImg)
+    baliseDiv.appendChild (baliseI)
+    baliseImg.setAttribute ("src", dataWorks[i].imageUrl)
+    baliseImg.setAttribute("alt", dataWorks[i].title)
+}
+}
+
+displayWorksOnModal(getWorks ())
 
 
 console.log (await getWorks ())
