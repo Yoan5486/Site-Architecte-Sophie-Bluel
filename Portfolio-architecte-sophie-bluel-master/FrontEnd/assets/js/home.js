@@ -1,5 +1,10 @@
 document.addEventListener("DOMContentLoaded", async () => {
  
+let modalOpen = false
+
+let openedByTxtModifier = false
+  
+let modal = null
 
 async function filterWorksByCategories(idCategories) {
     const dataWorks = await getWorks()
@@ -50,7 +55,6 @@ async function getCategories () {
     return await response.json ()
 }
 
-let modalOpen = false
 
 async function displayCategories () {
     const dataCategories = await getCategories ()
@@ -63,9 +67,10 @@ async function displayCategories () {
     baliseTous.classList.add ("button__selected")
 
     baliseTous.addEventListener("click", async () => {
-        displayWorksOnLoad ()
+        await displayWorksOnLoad ()
     })
-console.log (dataCategories)
+
+  console.log (dataCategories)
     for (let i = 0; i < dataCategories.length; i++) {
         let baliseButton  = document.createElement("button")
         containerCategories.appendChild(baliseButton)
@@ -137,54 +142,54 @@ if (authToken) {
 displayWorksOnLoad ()
 
 displayIcon ()
- const modal = function (e) {
-  e.preventDefault()
-  displayWorks ()
-  const targetSelector = e.target.getAttribute('href')
-  const target = document.querySelector(targetSelector)
-  if (target) {
-  target.style.display = "block"
-  target.removeAttribute('aria-hidden')
-  target.setAttribute('aria-modal', 'true')
+
+async function openModal() {
+  if (!modal) {
+      modal = document.querySelector(".modal")
+        if (modal) {
+          modal.style.display = "block"
+          document.body.classList.add("modal__open")
+          modalOpen = true
+          openedByTxtModifier = true
+      }
+    }
+}
+
+function closeModal() {
+  if (modal) {
+      modal.style.display = "none"
+      document.body.classList.remove("modal__open")
+      modalOpen = false
+      openedByTxtModifier = false
+      modal = null
   }
 }
+
  const btnModifier = document.querySelector(".txt__modifier")
- 
- const spanClose = document.querySelector(".modal__close")
 
- btnModifier.addEventListener("click", modal)
+ btnModifier.addEventListener("click", openModal) 
 
- 
+ const spanClose = document.querySelector(".fa-xmark")
 
- spanClose.addEventListener("click", () => {
-    if (modalOpen) {
-        modal.style.display = "none"
-        modalOpen = false
-      }
- })
-
+ spanClose.addEventListener("click", closeModal)
+        
  window.addEventListener("click", (event) => {
-   if (event.target === modal) {
-     modal.style.display = "none"
-     modalOpen = false
-   }
- })   
- console.log(modal, btnModifier, spanClose)
+  const modal = document.querySelector(".modal")
+  if (modalOpen && modal && !modal.contains(event.target)) {
+    if (!openedByTxtModifier) {
+      closeModal()
+  } else {
+      openedByTxtModifier = false;
+  }
+  }
+})
 
+console.log()
+ const projectsMake = document.querySelector(".projects__sub")
   const galleryFigures = document.querySelectorAll(".gallery figure")
   galleryFigures.forEach((figure) => {
     projectsMake.appendChild(figure)
   })
-  
-  document.addEventListener("click", async (event) => {
-    const trashIcon = event.target.closest(".trash__icon")
-    if (trashIcon) {
-      const workId = trashIcon.parentNode.getAttribute("data-id")
-      await deleteWorkById(workId)
-      trashIcon.parentNode.remove()
-    }
-  })
-  
   
 
   async function deleteWorkById(workId) {
@@ -199,30 +204,42 @@ displayIcon ()
     }
   }
  
+  const trashIcons = document.querySelectorAll(".trash__container")
+  trashIcons.forEach((icon) => {
+      icon.addEventListener("click", () => {
+          const workId = icon.parentNode.getAttribute("data-id")
+          deleteWorkById(workId)
+      })
+      console.log(deleteWorkById)
+  })
 
 }
 
-let baliseI = document.createElement("i")
-/*baliseI.classList.add("fa-solid fa-trash-can")*/
+
+
+
 
 async function displayWorksOnModal (data) {
   const projectsMake = document.querySelector(".projects__sub")
   let dataWorks = await getWorks () 
-console.log(data)
+  console.log(data)
   for (let i = 0; i < dataWorks.length; i++) { 
     let baliseDiv = document.createElement("div")
     let baliseImg = document.createElement("img")
+    let baliseI = document.createElement("i")
     baliseImg.classList.add("img__modal")
     baliseDiv.setAttribute("data-id", dataWorks[i].id)
-    projectsMake.appendChild (baliseDiv) 
-    baliseDiv.appendChild (baliseImg)
+    projectsMake.appendChild(baliseDiv) 
+    baliseDiv.appendChild(baliseImg)
+    baliseDiv.classList.add("trash__container")
+    baliseI.classList.add("fa-solid", "fa-trash-can")
     baliseDiv.appendChild (baliseI)
     baliseImg.setAttribute ("src", dataWorks[i].imageUrl)
     baliseImg.setAttribute("alt", dataWorks[i].title)
 }
 }
 
-displayWorksOnModal(getWorks ())
+displayWorksOnModal(await getWorks ())
 
 
 console.log (await getWorks ())
