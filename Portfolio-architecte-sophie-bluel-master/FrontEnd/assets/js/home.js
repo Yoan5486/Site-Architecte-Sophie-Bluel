@@ -194,58 +194,52 @@ async function openModal() {
   async function deleteWorkById(workId) {
     try {
       const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
-        method: 'DELETE'
+        method: 'DELETE', 
+        headers: {"Access-Control-Allow-Origin": "*",
+        Authorization: "Bearer " + localStorage.getItem("authToken"),
+      },
       })
-      const dataDelete = await response.json()
-      /*console.log(dataDelete)
-           const deletedElement = document.querySelector(`.gallery figure[data-id="${workId}"]`);
-           if (deletedElement) {
-               deletedElement.remove()
-           } else {
-               console.log(`Element with ID ${workId} not found in the gallery.`);
-           }*/
+     /* const dataDelete = await response.json()
+      console.log(dataDelete)*/
+         displayWorksOnModal ()
     } catch (error) {
       console.error('Erreur lors de la suppression de l\'œuvre :', error)
     }
   }
- 
+  async function displayWorksOnModal () {
+    const projectsMake = document.querySelector(".projects__sub")
+    projectsMake.innerHTML = ''
+    let dataWorks = await getWorks () 
+    for (let i = 0; i < dataWorks.length; i++) { 
+      let baliseDiv = document.createElement("div")
+      let baliseImg = document.createElement("img")
+      let baliseI = document.createElement("i")
+      baliseImg.classList.add("img__modal")
+      baliseDiv.setAttribute("data-id", dataWorks[i].id)
+      projectsMake.appendChild(baliseDiv) 
+      baliseDiv.appendChild(baliseImg)
+      baliseDiv.classList.add("trash__container")
+      baliseI.classList.add("fa-solid", "fa-trash-can")
+      baliseDiv.appendChild (baliseI)
+      baliseImg.setAttribute ("src", dataWorks[i].imageUrl)
+      baliseImg.setAttribute("alt", dataWorks[i].title)
+  }
   const trashIcons = document.querySelectorAll(".fa-trash-can")
-  trashIcons.forEach((icon) => {
+  console.log(trashIcons)
+    trashIcons.forEach((icon) => {
       icon.addEventListener("click", async () => {
-         dataDelete 
-          /*const workId = icon.parentNode.getAttribute("data-id")
-          await deleteWorkById(workId)*/
+          const workId = icon.parentNode.getAttribute("data-id")
+          await deleteWorkById(workId)
       })
       console.log(deleteWorkById)
   })
+  }
 
+  displayWorksOnModal(await getWorks ())
 }
 
 
 
-
-
-async function displayWorksOnModal (data) {
-  const projectsMake = document.querySelector(".projects__sub")
-  let dataWorks = await getWorks () 
-  console.log(data)
-  for (let i = 0; i < dataWorks.length; i++) { 
-    let baliseDiv = document.createElement("div")
-    let baliseImg = document.createElement("img")
-    let baliseI = document.createElement("i")
-    baliseImg.classList.add("img__modal")
-    baliseDiv.setAttribute("data-id", dataWorks[i].id)
-    projectsMake.appendChild(baliseDiv) 
-    baliseDiv.appendChild(baliseImg)
-    baliseDiv.classList.add("trash__container")
-    baliseI.classList.add("fa-solid", "fa-trash-can")
-    baliseDiv.appendChild (baliseI)
-    baliseImg.setAttribute ("src", dataWorks[i].imageUrl)
-    baliseImg.setAttribute("alt", dataWorks[i].title)
-}
-}
-
-displayWorksOnModal(await getWorks ())
 
 
 console.log (await getWorks ())
