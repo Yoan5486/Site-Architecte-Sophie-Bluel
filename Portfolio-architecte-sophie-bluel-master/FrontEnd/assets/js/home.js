@@ -155,7 +155,7 @@ async function openModal() {
     }
 }
 
-function closeModal() {
+ function closeModal() {
   if (modal) {
       modal.style.display = "none"
       document.body.classList.remove("modal__open")
@@ -163,7 +163,7 @@ function closeModal() {
       openedByTxtModifier = false
       modal = null
   }
-}
+  }
 
  const btnModifier = document.querySelector(".txt__modifier")
 
@@ -182,9 +182,8 @@ function closeModal() {
       openedByTxtModifier = false;
   }
   }
-})
+  })
 
-console.log()
  const projectsMake = document.querySelector(".projects__sub")
   const galleryFigures = document.querySelectorAll(".gallery figure")
   galleryFigures.forEach((figure) => {
@@ -198,17 +197,24 @@ console.log()
         method: 'DELETE'
       })
       const dataDelete = await response.json()
-      console.log(dataDelete)
+      /*console.log(dataDelete)
+           const deletedElement = document.querySelector(`.gallery figure[data-id="${workId}"]`);
+           if (deletedElement) {
+               deletedElement.remove()
+           } else {
+               console.log(`Element with ID ${workId} not found in the gallery.`);
+           }*/
     } catch (error) {
       console.error('Erreur lors de la suppression de l\'œuvre :', error)
     }
   }
  
-  const trashIcons = document.querySelectorAll(".trash__container")
+  const trashIcons = document.querySelectorAll(".fa-trash-can")
   trashIcons.forEach((icon) => {
-      icon.addEventListener("click", () => {
-          const workId = icon.parentNode.getAttribute("data-id")
-          deleteWorkById(workId)
+      icon.addEventListener("click", async () => {
+         dataDelete 
+          /*const workId = icon.parentNode.getAttribute("data-id")
+          await deleteWorkById(workId)*/
       })
       console.log(deleteWorkById)
   })
