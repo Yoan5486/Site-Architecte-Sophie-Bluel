@@ -6,6 +6,8 @@ let openedByTxtModifier = false
   
 let modal = null
 
+let modalAddPhoto = null
+
 async function filterWorksByCategories(idCategories) {
     const dataWorks = await getWorks()
     const filteredWorks = dataWorks.filter(work => work.categoryId === idCategories)
@@ -162,9 +164,24 @@ async function openModal() {
       modalOpen = false
       openedByTxtModifier = false
       modal = null
+      if (modalAddPhoto) {
+        modalAddPhoto.style.display = "none"
+        modalAddPhoto.style.zIndex = 990
+        modalAddPhoto = null
+    }
   }
   }
 
+  function openAddPhotoModal() {
+    modalAddPhoto = document.querySelector(".modal--photo__contain")
+      if (modalAddPhoto) {
+            modalAddPhoto.style.display = "block"
+            modalAddPhoto.style.zIndex = 1005
+            document.body.classList.add("modal__open")
+            modalOpen = true
+      }
+    
+}
  const btnModifier = document.querySelector(".txt__modifier")
 
  btnModifier.addEventListener("click", openModal) 
@@ -172,14 +189,29 @@ async function openModal() {
  const spanClose = document.querySelector(".fa-xmark")
 
  spanClose.addEventListener("click", closeModal)
-        
+
+ const spanClosePhoto = document.querySelector(".xmark__modal--photo")
+
+  spanClosePhoto.addEventListener("click", closeModal)
+
+const spanArrowLeft = document.querySelector(".fa-arrow-left");
+
+  spanArrowLeft.addEventListener("click", () => {
+      closeModal()
+      openModal()
+  })
+  
+ const btnAddPhoto = document.querySelector(".btn__add--photo")
+
+ btnAddPhoto.addEventListener("click", openAddPhotoModal)
+
  window.addEventListener("click", (event) => {
   const modal = document.querySelector(".modal")
   if (modalOpen && modal && !modal.contains(event.target)) {
     if (!openedByTxtModifier) {
       closeModal()
   } else {
-      openedByTxtModifier = false;
+      openedByTxtModifier = false
   }
   }
   })
@@ -199,8 +231,6 @@ async function openModal() {
         Authorization: "Bearer " + localStorage.getItem("authToken"),
       },
       })
-     /* const dataDelete = await response.json()
-      console.log(dataDelete)*/
          displayWorksOnModal ()
     } catch (error) {
       console.error('Erreur lors de la suppression de l\'œuvre :', error)
