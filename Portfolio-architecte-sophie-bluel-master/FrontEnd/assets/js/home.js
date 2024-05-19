@@ -64,21 +64,18 @@ async function displayCategories () {
     let baliseTous = document.createElement("button")
     containerCategories.appendChild(baliseTous)
     baliseTous.textContent = "Tous"
-    baliseTous.classList.add ("button__categories--tous")
-    baliseTous.classList.add ("all__buttons")
-    baliseTous.classList.add ("button__selected")
-
+    baliseTous.classList.add ("button__categories--tous", "all__buttons", "button__selected")
     baliseTous.addEventListener("click", async () => {
         await displayWorksOnLoad ()
     })
 
   console.log (dataCategories)
+  let datalist = document.getElementById("options")
     for (let i = 0; i < dataCategories.length; i++) {
         let baliseButton  = document.createElement("button")
         containerCategories.appendChild(baliseButton)
         baliseButton.textContent = dataCategories[i].name
-        baliseButton.classList.add ("buttons__categories")
-        baliseButton.classList.add ("all__buttons")
+        baliseButton.classList.add ("buttons__categories", "all__buttons")
         baliseButton.setAttribute ("categories__id", dataCategories[i].id)
         baliseButton.addEventListener("click", async (event) => {
             const idCategories = event.target.getAttribute ("categories__id") 
@@ -88,6 +85,9 @@ async function displayCategories () {
             console.log(idCategories)
             displayWorks (filteredWorks)
         })
+      let option = document.createElement("option")
+      option.value = dataCategories[i].name
+      datalist.appendChild(option)
     }
 let allButtons = document.querySelectorAll(".all__buttons")
 allButtons.forEach((button) => {
@@ -101,7 +101,7 @@ allButtons.forEach((button) => {
     }  
 
 
-
+displayWorksOnLoad ()
  
 displayWorks (getWorks())
 displayCategories ()
@@ -169,16 +169,24 @@ async function openModal() {
         modalAddPhoto.style.zIndex = 990
         modalAddPhoto = null
     }
+    const modalContain = document.querySelector(".modal__contain")
+    if (modalContain) {
+        modalContain.classList.remove("first--modal__hidden")
+    }
   }
   }
 
   function openAddPhotoModal() {
     modalAddPhoto = document.querySelector(".modal--photo__contain")
       if (modalAddPhoto) {
-            modalAddPhoto.style.display = "block"
-            modalAddPhoto.style.zIndex = 1005
-            document.body.classList.add("modal__open")
-            modalOpen = true
+        modalAddPhoto.style.display = "flex"
+        modalAddPhoto.style.zIndex = 1005
+        document.body.classList.add("modal__open")
+        modalOpen = true
+        const modalContain = document.querySelector(".modal__contain")
+        if (modalContain) {
+            modalContain.classList.add("first--modal__hidden")
+        }
       }
     
 }
@@ -200,7 +208,7 @@ const spanArrowLeft = document.querySelector(".fa-arrow-left");
       closeModal()
       openModal()
   })
-  
+
  const btnAddPhoto = document.querySelector(".btn__add--photo")
 
  btnAddPhoto.addEventListener("click", openAddPhotoModal)
