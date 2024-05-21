@@ -213,6 +213,95 @@ const spanArrowLeft = document.querySelector(".fa-arrow-left");
 
  btnAddPhoto.addEventListener("click", openAddPhotoModal)
 
+  const btnPhoto = document.querySelector(".btn__photo")
+  const fileInput = document.getElementById("fileInput")
+  const btnValidate = document.querySelector(".btn__validate")
+  let selectedFile
+
+  btnPhoto.addEventListener("click", () => {
+      fileInput.click()
+  })
+
+  fileInput.addEventListener("change", (event) => {
+      const file = event.target.files[0]
+      if (file) {
+         selectedFile = file
+          console.log("Fichier sélectionné:", file)
+          const reader = new FileReader()
+          reader.onload = function(e) {
+              const imgPreview = document.querySelector(".img__none")
+              imgPreview.src = e.target.result
+              imgPreview.classList.add("img__preview")
+              imgPreview.classList.remove("img__none")
+          }
+          reader.readAsDataURL(file)
+      }
+  })
+  btnValidate.addEventListener("click", async () => {
+          closeModal ()
+          await sendDatatoAPI ()
+  })
+  
+    async function sendDatatoAPI () {
+    const title = document.querySelector(".title__projects").value
+    const category = document.querySelector(".categories__scroll").value
+
+    if (selectedFile && title && category) {
+        const formData = new FormData()
+        formData.append("image", selectedFile)
+        formData.append("title", title)
+        formData.append("category", category)
+
+        try {
+            const response = await fetch("http://localhost:5678/api/works", {
+                method: "POST",
+                headers: {
+                 Authorization: "Bearer " + localStorage.getItem("authToken"),
+                },
+                body: formData,
+            })
+            if (!response.ok) {
+              const errorResponse = await response.json()
+              console.error("Erreur lors de l'ajout de l'œuvre:", errorResponse)
+              alert(`Erreur : ${errorResponse.message || response.statusText}`)
+          } else {
+              const newWork = await response.json()
+              console.log("Nouvelle œuvre ajoutée:", newWork)
+              addWorkToGallery(newWork)
+          }
+      } catch (error) {
+          console.error("Erreur lors de l'ajout de l'œuvre:", error)
+          alert("Erreur lors de l'ajout de l'œuvre. Veuillez réessayer.")
+      }
+  } else {
+      alert("Veuillez sélectionner un fichier, entrer un titre et une catégorie.")
+  }
+ }
+
+function addWorkToGallery(work) {
+  const projectsMake = document.querySelector(".projects__sub")
+  const baliseDiv = document.createElement("div")
+  const baliseImg = document.createElement("img")
+  const baliseI = document.createElement("i")
+
+  baliseImg.classList.add("img__modal")
+  baliseDiv.setAttribute("data-id", work.id)
+  baliseDiv.classList.add("trash__container")
+  baliseI.classList.add("fa-solid", "fa-trash-can")
+
+  baliseImg.src = work.imageUrl
+  baliseImg.alt = work.title
+
+  baliseDiv.appendChild(baliseImg)
+  baliseDiv.appendChild(baliseI)
+  projectsMake.appendChild(baliseDiv)
+
+  baliseI.addEventListener("click", async () => {
+      await deleteWorkById(work.id)
+  })
+}
+
+        
  window.addEventListener("click", (event) => {
   const modal = document.querySelector(".modal")
   if (modalOpen && modal && !modal.contains(event.target)) {

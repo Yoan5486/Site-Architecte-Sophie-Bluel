@@ -268,6 +268,16 @@ li:hover {
 	font-size: 14px;
 	text-align: center;
 }
+
+#fileInput {
+	display: none; 
+}
+
+.img__preview {
+	width: 76px;
+	height: 76px;
+	border: 1px solid white; 
+}
 .rules__photo {
 	font-family: 'Work Sans';
 	font-weight: 400;
@@ -297,9 +307,6 @@ li:hover {
 }
 
 .categories__scroll {
-	-webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
     width: 420px;
 	height: 51px;
 	box-shadow: 0px 4px 14px 0px #00000017;
