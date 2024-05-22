@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
- 
+
+// Variables globales pour la gestion des modales
+
 let modalOpen = false
 
 let openedByTxtModifier = false
@@ -8,6 +10,8 @@ let modal = null
 
 let modalAddPhoto = null
 
+  // Fonction pour filtrer les œuvres par catégorie
+
 async function filterWorksByCategories(idCategories) {
     const dataWorks = await getWorks()
     const filteredWorks = dataWorks.filter(work => work.categoryId === idCategories)
@@ -15,15 +19,15 @@ async function filterWorksByCategories(idCategories) {
     console.log(idCategories)
     return filteredWorks
 }
+ // Fonction pour récupérer les œuvres depuis l'API
 
 async function getWorks () {
     const response = await fetch ("http://localhost:5678/api/works")
-
     let data = await response.json ()
     console.log(data)
     return data
 }
-
+ // Fonction pour afficher les œuvres dans la galerie
 
 async function displayWorks (data) {
     console.log(data)
@@ -41,23 +45,25 @@ async function displayWorks (data) {
         baliseImg.setAttribute("alt", data[i].title)
         baliseFigcaption.textContent = data[i].title
     }
-
 }
+// Affiche les œuvres au chargement de la page
 
 displayWorks (getWorks ())
+
+ // Fonction pour récupérer et afficher les œuvres au chargement
+
 async function displayWorksOnLoad () {
     const dataWorks = await getWorks()
     await displayWorks(dataWorks)
 }
 
-
+// Fonction pour récupérer les catégories depuis l'API
 async function getCategories () {
     const response = await fetch ("http://localhost:5678/api/categories")
-
     return await response.json ()
 }
 
-
+ // Fonction pour afficher les catégories et configurer les filtres
 async function displayCategories () {
     const dataCategories = await getCategories ()
     let containerCategories = document.querySelector(".container__filter")
@@ -70,6 +76,9 @@ async function displayCategories () {
     })
 
   console.log (dataCategories)
+
+ // Suite de la fonction pour configurer les filtres
+
   let datalist = document.getElementById("options")
     for (let i = 0; i < dataCategories.length; i++) {
         let baliseButton  = document.createElement("button")
@@ -89,6 +98,8 @@ async function displayCategories () {
       option.value = dataCategories[i].name
       datalist.appendChild(option)
     }
+ // Code pour l'aspect au clic des boutons
+
 let allButtons = document.querySelectorAll(".all__buttons")
 allButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -100,23 +111,28 @@ allButtons.forEach((button) => {
 })
     }  
 
+// Appel initial pour afficher les œuvres et les catégories
 
 displayWorksOnLoad ()
- 
 displayWorks (getWorks())
 displayCategories ()
 
+ // Fonction de déconnexion
 
 function logout() {
     localStorage.removeItem("authToken")
     window.location.href = "login__page.html"
 }
 
+   // Gestion du lien de connexion/déconnexion
+
 const loginLink = document.querySelector("#login__link")
 loginLink.addEventListener("click", logout)
 const authToken = localStorage.getItem("authToken")
 if (authToken) {
-    
+
+      // Affichage des icônes d'édition si l'utilisateur est authentifié
+
     loginLink.textContent = "logout"
     async function displayIcon() {
         const banner = document.createElement("div")
@@ -141,9 +157,12 @@ if (authToken) {
         txtMesprojets.appendChild(txtModifier)
         document.body.insertBefore(banner, document.body.firstChild)
 }
-displayWorksOnLoad ()
+ // Affichage des œuvres et des icônes d'édition
 
+displayWorksOnLoad ()
 displayIcon ()
+
+  // Fonction pour gérer l'ouverture de la modale principale
 
 async function openModal() {
   if (!modal) {
@@ -156,6 +175,7 @@ async function openModal() {
       }
     }
 }
+  // Fonction pour gérer la fermeture des modales
 
  function closeModal() {
   if (modal) {
@@ -176,6 +196,8 @@ async function openModal() {
   }
   }
 
+  // Fonction pour gérer l'ouverture de la modale addPhoto
+
   function openAddPhotoModal() {
     modalAddPhoto = document.querySelector(".modal--photo__contain")
       if (modalAddPhoto) {
@@ -188,21 +210,17 @@ async function openModal() {
             modalContain.classList.add("first--modal__hidden")
         }
       }
-    
 }
+
+   // Gestion des événements de clic pour les modales
+
  const btnModifier = document.querySelector(".txt__modifier")
-
  btnModifier.addEventListener("click", openModal) 
-
  const spanClose = document.querySelector(".fa-xmark")
-
  spanClose.addEventListener("click", closeModal)
-
  const spanClosePhoto = document.querySelector(".xmark__modal--photo")
-
-  spanClosePhoto.addEventListener("click", closeModal)
-
-const spanArrowLeft = document.querySelector(".fa-arrow-left");
+ spanClosePhoto.addEventListener("click", closeModal)
+const spanArrowLeft = document.querySelector(".fa-arrow-left")
 
   spanArrowLeft.addEventListener("click", () => {
       closeModal()
@@ -210,7 +228,6 @@ const spanArrowLeft = document.querySelector(".fa-arrow-left");
   })
 
  const btnAddPhoto = document.querySelector(".btn__add--photo")
-
  btnAddPhoto.addEventListener("click", openAddPhotoModal)
 
   const btnPhoto = document.querySelector(".btn__photo")
@@ -221,6 +238,8 @@ const spanArrowLeft = document.querySelector(".fa-arrow-left");
   btnPhoto.addEventListener("click", () => {
       fileInput.click()
   })
+ // EventListener de l'input file 
+
 
   fileInput.addEventListener("change", (event) => {
       const file = event.target.files[0]
@@ -241,7 +260,9 @@ const spanArrowLeft = document.querySelector(".fa-arrow-left");
           closeModal ()
           await sendDatatoAPI ()
   })
-  
+
+ // Fonction pour envoyer les données à l'API et ajouter une nouvelle œuvre
+
     async function sendDatatoAPI () {
     const title = document.querySelector(".title__projects").value
     const category = document.querySelector(".categories__scroll").value
@@ -278,30 +299,34 @@ const spanArrowLeft = document.querySelector(".fa-arrow-left");
   }
  }
 
-function addWorkToGallery(work) {
-  const projectsMake = document.querySelector(".projects__sub")
-  const baliseDiv = document.createElement("div")
-  const baliseImg = document.createElement("img")
-  const baliseI = document.createElement("i")
+  // Fonction pour ajouter une nouvelle œuvre à la galerie
 
-  baliseImg.classList.add("img__modal")
-  baliseDiv.setAttribute("data-id", work.id)
-  baliseDiv.classList.add("trash__container")
-  baliseI.classList.add("fa-solid", "fa-trash-can")
+  function addWorkToGallery(work) {
+    const projectsMake = document.querySelector(".projects__sub")
+    const baliseDiv = document.createElement("div")
+    const baliseImg = document.createElement("img")
+    const baliseI = document.createElement("i")
 
-  baliseImg.src = work.imageUrl
-  baliseImg.alt = work.title
+    baliseImg.classList.add("img__modal")
+    baliseDiv.setAttribute("data-id", work.id)
+    baliseDiv.classList.add("trash__container")
+    baliseI.classList.add("fa-solid", "fa-trash-can")
 
-  baliseDiv.appendChild(baliseImg)
-  baliseDiv.appendChild(baliseI)
-  projectsMake.appendChild(baliseDiv)
+    baliseImg.src = work.imageUrl
+    baliseImg.alt = work.title
 
-  baliseI.addEventListener("click", async () => {
+    baliseDiv.appendChild(baliseImg)
+    baliseDiv.appendChild(baliseI)
+    projectsMake.appendChild(baliseDiv)
+
+    baliseI.addEventListener("click", async () => {
       await deleteWorkById(work.id)
-  })
+    })
 }
 
-        
+  // Ferme la modale lorsqu'on clique en dehors      
+
+
  window.addEventListener("click", (event) => {
   const modal = document.querySelector(".modal")
   if (modalOpen && modal && !modal.contains(event.target)) {
@@ -313,12 +338,15 @@ function addWorkToGallery(work) {
   }
   })
 
- const projectsMake = document.querySelector(".projects__sub")
+  // Ajoute les figures de la galerie au contenus des projets
+
+  const projectsMake = document.querySelector(".projects__sub")
   const galleryFigures = document.querySelectorAll(".gallery figure")
   galleryFigures.forEach((figure) => {
     projectsMake.appendChild(figure)
   })
   
+   // Fonction pour supprimer une œuvre par son ID
 
   async function deleteWorkById(workId) {
     try {
@@ -333,6 +361,9 @@ function addWorkToGallery(work) {
       console.error('Erreur lors de la suppression de l\'œuvre :', error)
     }
   }
+
+  // Fonction pour afficher les œuvres dans la modale
+
   async function displayWorksOnModal () {
     const projectsMake = document.querySelector(".projects__sub")
     projectsMake.innerHTML = ''
@@ -351,6 +382,9 @@ function addWorkToGallery(work) {
       baliseImg.setAttribute ("src", dataWorks[i].imageUrl)
       baliseImg.setAttribute("alt", dataWorks[i].title)
   }
+
+  // Multiplications des icônes trash
+
   const trashIcons = document.querySelectorAll(".fa-trash-can")
   console.log(trashIcons)
     trashIcons.forEach((icon) => {
@@ -361,15 +395,12 @@ function addWorkToGallery(work) {
       console.log(deleteWorkById)
   })
   }
+  // Affiche les œuvres dans la modale
 
   displayWorksOnModal(await getWorks ())
 }
 
-
-
-
-
+// Affiche les œuvres et les catégories dans la console
 console.log (await getWorks ())
 console.log (await getCategories ())
-
 })
