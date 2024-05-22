@@ -79,7 +79,8 @@ async function displayCategories () {
 
  // Suite de la fonction pour configurer les filtres
 
-  let datalist = document.getElementById("options")
+  let datalist = document.querySelector(".categories__scroll")
+  
     for (let i = 0; i < dataCategories.length; i++) {
         let baliseButton  = document.createElement("button")
         containerCategories.appendChild(baliseButton)
@@ -94,8 +95,10 @@ async function displayCategories () {
             console.log(idCategories)
             displayWorks (filteredWorks)
         })
+ // Menu déroulant rajout de photo
       let option = document.createElement("option")
-      option.value = dataCategories[i].name
+      option.textContent = dataCategories[i].name
+      option.setAttribute("categories__id--Modal", dataCategories[i].id)
       datalist.appendChild(option)
     }
  // Code pour l'aspect au clic des boutons
@@ -191,7 +194,7 @@ async function openModal() {
     }
     const modalContain = document.querySelector(".modal__contain")
     if (modalContain) {
-        modalContain.classList.remove("first--modal__hidden")
+        modalContain.classList.remove("hidden")
     }
   }
   }
@@ -207,7 +210,7 @@ async function openModal() {
         modalOpen = true
         const modalContain = document.querySelector(".modal__contain")
         if (modalContain) {
-            modalContain.classList.add("first--modal__hidden")
+            modalContain.classList.add("hidden")
         }
       }
 }
@@ -249,9 +252,13 @@ const spanArrowLeft = document.querySelector(".fa-arrow-left")
           const reader = new FileReader()
           reader.onload = function(e) {
               const imgPreview = document.querySelector(".img__none")
+              const rulesPhoto = document.querySelector(".rules__photo")
+              rulesPhoto.classList.add("hidden")
+              btnPhoto.classList.add("hidden")
               imgPreview.src = e.target.result
               imgPreview.classList.add("img__preview")
               imgPreview.classList.remove("img__none")
+              
           }
           reader.readAsDataURL(file)
       }
@@ -265,13 +272,13 @@ const spanArrowLeft = document.querySelector(".fa-arrow-left")
 
     async function sendDatatoAPI () {
     const title = document.querySelector(".title__projects").value
-    const category = document.querySelector(".categories__scroll").value
+    /*const category = option.getAttribute("categories__id--Modal")*/
 
-    if (selectedFile && title && category) {
+    if (selectedFile && title) {
         const formData = new FormData()
         formData.append("image", selectedFile)
         formData.append("title", title)
-        formData.append("category", category)
+        formData.append("category", 1)
 
         try {
             const response = await fetch("http://localhost:5678/api/works", {

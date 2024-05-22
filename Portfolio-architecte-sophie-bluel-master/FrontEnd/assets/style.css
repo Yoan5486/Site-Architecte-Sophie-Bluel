@@ -155,7 +155,7 @@ li:hover {
 	box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   }
   
-.first--modal__hidden {
+.hidden {
 	display: none;
 }
 .modal--photo__contain {
@@ -274,9 +274,8 @@ li:hover {
 }
 
 .img__preview {
-	width: 76px;
-	height: 76px;
-	border: 1px solid white; 
+	width: 129px;
+	height: 193px;
 }
 .rules__photo {
 	font-family: 'Work Sans';
@@ -307,6 +306,7 @@ li:hover {
 }
 
 .categories__scroll {
+	appearance: none;
     width: 420px;
 	height: 51px;
 	box-shadow: 0px 4px 14px 0px #00000017;
