@@ -3,11 +3,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 // Variables globales pour la gestion des modales
 
 let modalOpen = false
-
 let openedByTxtModifier = false
-  
 let modal = null
-
 let modalAddPhoto = null
 
   // Fonction pour filtrer les œuvres par catégorie
@@ -46,9 +43,6 @@ async function displayWorks (data) {
         baliseFigcaption.textContent = data[i].title
     }
 }
-// Affiche les œuvres au chargement de la page
-
-displayWorks (getWorks ())
 
  // Fonction pour récupérer et afficher les œuvres au chargement
 
@@ -78,8 +72,6 @@ async function displayCategories () {
   console.log (dataCategories)
 
  // Suite de la fonction pour configurer les filtres
-
-  let datalist = document.querySelector(".categories__scroll")
   
     for (let i = 0; i < dataCategories.length; i++) {
         let baliseButton  = document.createElement("button")
@@ -95,12 +87,8 @@ async function displayCategories () {
             console.log(idCategories)
             displayWorks (filteredWorks)
         })
- // Menu déroulant rajout de photo
-      let option = document.createElement("option")
-      option.textContent = dataCategories[i].name
-      option.setAttribute("categories__id--Modal", dataCategories[i].id)
-      datalist.appendChild(option)
     }
+
  // Code pour l'aspect au clic des boutons
 
 let allButtons = document.querySelectorAll(".all__buttons")
@@ -191,10 +179,34 @@ async function openModal() {
         modalAddPhoto.style.display = "none"
         modalAddPhoto.style.zIndex = 990
         modalAddPhoto = null
-    }
+       }
     const modalContain = document.querySelector(".modal__contain")
     if (modalContain) {
         modalContain.classList.remove("hidden")
+    }
+
+   // Réinitialiser la valeur de l'input file
+  
+   if (fileInput) {
+    fileInput.value = ''
+    }
+  
+    // Enlever le contenu ajouté après l'input
+
+    const imgPreview = document.querySelector(".img__preview")
+    const rulesPhoto = document.querySelector(".rules__photo")
+    const btnPhoto = document.querySelector(".btn__photo")
+
+    if (imgPreview) {
+        imgPreview.classList.remove("img__preview")
+        imgPreview.classList.add("img__none")
+        imgPreview.src = "./assets/icons/picture-svgrepo-com 1.png"
+    }
+    if (rulesPhoto) {
+        rulesPhoto.classList.remove("hidden")
+    }
+    if (btnPhoto) {
+        btnPhoto.classList.remove("hidden")
     }
   }
   }
@@ -212,6 +224,14 @@ async function openModal() {
         if (modalContain) {
             modalContain.classList.add("hidden")
         }
+      const title = document.querySelector(".title__projects")
+      if (title) {
+      title.value = ''
+       }
+      const categorySelect = document.querySelector(".categories__scroll")
+       if (categorySelect) {
+        categorySelect.value = ""
+       }
       }
 }
 
@@ -257,8 +277,7 @@ const spanArrowLeft = document.querySelector(".fa-arrow-left")
               btnPhoto.classList.add("hidden")
               imgPreview.src = e.target.result
               imgPreview.classList.add("img__preview")
-              imgPreview.classList.remove("img__none")
-              
+              imgPreview.classList.remove("img__none") 
           }
           reader.readAsDataURL(file)
       }
@@ -268,17 +287,40 @@ const spanArrowLeft = document.querySelector(".fa-arrow-left")
           await sendDatatoAPI ()
   })
 
+console.log(getCategories ())
+
+  // Création de la fonction displayCategoriesInSelect
+
+async function displayCategoriesInSelect() {
+      const categorySelect = document.querySelector(".categories__scroll")
+       const categories = await getCategories ()
+       categorySelect.innerHTML = ''
+       categories.forEach(category => {
+
+        //Ajoute les options au menu déroulant
+
+           let option = document.createElement("option")
+            option.textContent = category.name 
+            option.value = category.id
+            categorySelect.appendChild(option)
+            categorySelect.appendChild(option)
+  })
+}
+// Appel initial pour charger les catégories dans le menu déroulant
+
+displayCategoriesInSelect()
+
  // Fonction pour envoyer les données à l'API et ajouter une nouvelle œuvre
 
-    async function sendDatatoAPI () {
+ async function sendDatatoAPI () {
     const title = document.querySelector(".title__projects").value
-    /*const category = option.getAttribute("categories__id--Modal")*/
-
-    if (selectedFile && title) {
+    const categorySelect = document.querySelector(".categories__scroll")
+    const selectedCategory = categorySelect.value
+    if (selectedFile && title && selectedCategory) {
         const formData = new FormData()
         formData.append("image", selectedFile)
         formData.append("title", title)
-        formData.append("category", 1)
+        formData.append("category", selectedCategory)
 
         try {
             const response = await fetch("http://localhost:5678/api/works", {
@@ -296,6 +338,7 @@ const spanArrowLeft = document.querySelector(".fa-arrow-left")
               const newWork = await response.json()
               console.log("Nouvelle œuvre ajoutée:", newWork)
               addWorkToGallery(newWork)
+              displayWorksOnLoad ()
           }
       } catch (error) {
           console.error("Erreur lors de l'ajout de l'œuvre:", error)
@@ -364,6 +407,7 @@ const spanArrowLeft = document.querySelector(".fa-arrow-left")
       },
       })
          displayWorksOnModal ()
+         displayWorksOnLoad ()
     } catch (error) {
       console.error('Erreur lors de la suppression de l\'œuvre :', error)
     }
