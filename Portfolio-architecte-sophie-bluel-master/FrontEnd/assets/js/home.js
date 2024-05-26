@@ -184,6 +184,11 @@ async function openModal() {
     if (modalContain) {
         modalContain.classList.remove("hidden")
     }
+    const errorMessage = document.querySelector(".error__message")
+        if (errorMessage) {
+        errorMessage.style.display = "none"
+        errorMessage.textContent = ""
+         }
 
    // Réinitialiser la valeur de l'input file
   
@@ -200,7 +205,7 @@ async function openModal() {
     if (imgPreview) {
         imgPreview.classList.remove("img__preview")
         imgPreview.classList.add("img__none")
-        imgPreview.src = "./assets/icons/picture-svgrepo-com 1.png"
+        imgPreview.src = "./assets/icons/picture-svgrepo-com.png"
     }
     if (rulesPhoto) {
         rulesPhoto.classList.remove("hidden")
@@ -261,8 +266,8 @@ const spanArrowLeft = document.querySelector(".fa-arrow-left")
   btnPhoto.addEventListener("click", () => {
       fileInput.click()
   })
- // EventListener de l'input file 
 
+ // EventListener de l'input file 
 
   fileInput.addEventListener("change", (event) => {
       const file = event.target.files[0]
@@ -282,9 +287,48 @@ const spanArrowLeft = document.querySelector(".fa-arrow-left")
           reader.readAsDataURL(file)
       }
   })
-  btnValidate.addEventListener("click", async () => {
-          closeModal ()
-          await sendDatatoAPI ()
+
+    // Création de la fonction de vérification du formulaire d'ajout de photo
+
+async function validateForm() {
+  const titleInput = document.querySelector(".title__projects").value.trim()
+  const categorySelect = document.querySelector(".categories__scroll")
+  const selectedCategoryId = categorySelect.value
+  modalAddPhoto = document.querySelector(".modal--photo__contain")
+  const errorMessage = document.createElement("div")
+  errorMessage.classList.add("error__message")
+  modalAddPhoto.appendChild(errorMessage)
+  const works = await getWorks()
+  const categories = await getCategories()
+
+  const titleExists = works.some(work => work.title === titleInput)
+  const categoryExists = categories.some(category => category.id.toString() === selectedCategoryId)
+
+  if (titleExists || !categoryExists) {
+      let errorText = "Erreur :"
+      if (titleExists) {
+          errorText += " Le titre ne correspond à aucune œuvre existante."
+      }
+      if (!categoryExists) {
+          errorText += "La catégorie sélectionnée ne correspond à aucune catégorie existante."
+      }
+      errorMessage.textContent = errorText
+      errorMessage.style.display = "block"
+      return false
+  } else {
+      errorMessage.style.display = "none"
+      return true
+  }
+}
+   // EventListener du bouton valider 
+
+  btnValidate.addEventListener("click", async (e) => {
+          e.preventDefault()
+          const isValid = await validateForm()
+          if (isValid) {
+              await sendDatatoAPI()
+              closeModal ()
+          }
   })
 
 console.log(getCategories ())
@@ -338,7 +382,7 @@ displayCategoriesInSelect()
               const newWork = await response.json()
               console.log("Nouvelle œuvre ajoutée:", newWork)
               addWorkToGallery(newWork)
-              displayWorksOnLoad ()
+              await displayWorksOnLoad ()
           }
       } catch (error) {
           console.error("Erreur lors de l'ajout de l'œuvre:", error)
