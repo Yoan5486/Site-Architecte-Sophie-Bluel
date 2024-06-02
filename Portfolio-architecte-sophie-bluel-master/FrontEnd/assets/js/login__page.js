@@ -41,19 +41,19 @@ try {
 console.error("Erreur lors de la requête:", error)
 }
 }
-document.addEventListener("DOMContentLoaded", () => {
-    const authToken = localStorage.getItem("authToken")
 
+    const authToken = localStorage.getItem("authToken")
+    console.log(authToken)
     if (authToken) {
         console.log("Utilisateur connecté !")
-        window.location.href = "index.html"
+       window.location.href = "index.html"
     } else {
         console.log("Utilisateur non connecté")
         displayErrorMessage("Veuillez vous connecter pour accéder à cette page.")
         
     }
     
-})
+
 const btnConnect = document.querySelector(".btn__connect")
 
 if (btnConnect){

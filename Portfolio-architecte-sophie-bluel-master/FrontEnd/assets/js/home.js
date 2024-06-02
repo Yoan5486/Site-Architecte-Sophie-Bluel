@@ -123,8 +123,14 @@ const authToken = localStorage.getItem("authToken")
 if (authToken) {
 
       // Affichage des icônes d'édition si l'utilisateur est authentifié
-
-    loginLink.textContent = "logout"
+    console.log("Utilisateur connecté !")
+    loginLink.style.display = "none"
+    const logoutLink = document.createElement("li")
+    logoutLink.textContent = "logout"
+    const NavLinks = document.querySelector(".nav__links")
+    NavLinks.classList.add("logout__link")
+    NavLinks.appendChild(logoutLink)
+    logoutLink.addEventListener("click", logout)
     async function displayIcon() {
         const banner = document.createElement("div")
         banner.classList.add("banner")
@@ -307,7 +313,7 @@ async function validateForm() {
   if (titleExists || !categoryExists) {
       let errorText = "Erreur :"
       if (titleExists) {
-          errorText += " Le titre ne correspond à aucune œuvre existante."
+          errorText += "Le titre correspond à une œuvre existante."
       }
       if (!categoryExists) {
           errorText += "La catégorie sélectionnée ne correspond à aucune catégorie existante."
