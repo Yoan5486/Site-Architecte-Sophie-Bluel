@@ -1,3 +1,5 @@
+// Fonction pour ajouter le message d'erreur
+
 function displayErrorMessage(message) {
     const errorMessage = document.createElement("p")
     errorMessage.textContent = message
@@ -7,6 +9,8 @@ function displayErrorMessage(message) {
     container.appendChild(errorMessage)
 }
 
+// Fonction de login 
+
 async function login(email, password) {
     const idConnection = {
         email: email,
@@ -15,6 +19,7 @@ async function login(email, password) {
 
 const chargeUtile = JSON.stringify(idConnection)
 
+// Récupération à l'API du token
 try {
     const response = await fetch ("http://localhost:5678/api/users/login", {
         method: "POST", 
@@ -42,6 +47,8 @@ console.error("Erreur lors de la requête:", error)
 }
 }
 
+// Récupération du token
+
     const authToken = localStorage.getItem("authToken")
     console.log(authToken)
     if (authToken) {
@@ -53,6 +60,7 @@ console.error("Erreur lors de la requête:", error)
         
     }
     
+// Gestion du bouton connect
 
 const btnConnect = document.querySelector(".btn__connect")
 
